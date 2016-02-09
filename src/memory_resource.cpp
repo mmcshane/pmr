@@ -40,7 +40,7 @@ namespace pmr
     bool operator==(const memory_resource& lhs,
             const memory_resource& rhs) noexcept
     {
-        return &lhs == &rhs && lhs.is_equal(rhs);
+        return &lhs == &rhs || lhs.is_equal(rhs);
     }
 
 
