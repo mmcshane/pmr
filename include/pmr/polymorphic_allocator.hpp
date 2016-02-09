@@ -173,6 +173,19 @@ namespace pmr
         auto construct_tuple(aware_tagged, std::tuple<Args...>& t) ->
             decltype(std::tuple_cat(
                 std::make_tuple(std::allocator_arg, m_memory), std::move(t)));
+
+        friend bool operator==(const polymorphic_allocator& lhs,
+                const polymorphic_allocator& rhs)
+        {
+            return *lhs.m_memory == *rhs.m_memory;
+        }
+
+
+        friend bool operator!=(const polymorphic_allocator& lhs,
+                const polymorphic_allocator& rhs)
+        {
+            return !(lhs == rhs);
+        }
     };
 
 
