@@ -1,4 +1,5 @@
 #include "pmr/memory_resource.hpp"
+#include "pmr/resource_adapter.hpp"
 #include <atomic>
 #include <cassert>
 #include <new>
@@ -53,28 +54,6 @@ namespace pmr
 
     namespace
     {
-        class new_del_mem : public memory_resource
-        {
-          public:
-            void* do_allocate(std::size_t bytes, std::size_t align)
-            {
-                return new char[bytes];
-            }
-
-
-            void do_deallocate(void* ptr, std::size_t, std::size_t)
-            {
-                delete[]((char*)ptr);
-            }
-
-
-            bool do_is_equal(const memory_resource& other) const noexcept
-            {
-                return this == &other;
-            }
-        };
-
-
         class null_mem : public memory_resource
         {
           public:
@@ -98,7 +77,7 @@ namespace pmr
 
     memory_resource* new_delete_resource() noexcept
     {
-        static new_del_mem mr;
+        static resource_adapter<std::allocator<char>> mr;
         return &mr;
     }
 
