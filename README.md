@@ -15,4 +15,4 @@ This is a work in progress standalone implementation of [N3916](http://www.open-
 | pmr::polymorphic_allocator        | Complete  |
 | pmr::synchronized_pool_resource   | Absent    |
 | pmr::unsynchronized_pool_resource | Absent    |
-| pmr::resource_adapter             | Absent    |
+| pmr::resource_adapter             | Complete  |
