@@ -17,7 +17,8 @@ namespace pmr
             void* ptr = upstream.allocate(bytes + sizeof(header));
             header* hdr = ::new (ptr) header();
             hdr->size = bytes + sizeof(header);
-            m_slist.next = hdr;
+            m_tail->next = hdr;
+            m_tail = hdr;
             return reinterpret_cast<char*>(ptr) + sizeof(header);
         }
 

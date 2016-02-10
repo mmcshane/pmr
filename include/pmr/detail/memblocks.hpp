@@ -23,6 +23,7 @@ namespace pmr
 
           private:
             header m_slist;
+            header* m_tail = &m_slist;
         };
     }
 }
