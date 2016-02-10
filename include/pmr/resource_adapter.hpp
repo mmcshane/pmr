@@ -22,30 +22,30 @@ namespace pmr
     //!
     //! \tparam Alloc The type of allocator to adapt
     template <typename Alloc>
-    class resource_adapter : public memory_resource
+    class resource_adapter_impl : public memory_resource
     {
       public:
         using allocator_type = Alloc;
 
         //! Instantiate and use a default-constructed instance of allocator_type
-        resource_adapter();
+        resource_adapter_impl();
 
-        resource_adapter(const resource_adapter&) = default;
-        resource_adapter(resource_adapter&&) = default;
-
-        //! Instantiate specifying an allocator instance
-        //!
-        //! \param alloc an instance of the Allocator concept.
-        explicit resource_adapter(const allocator_type& alloc);
-
+        resource_adapter_impl(const resource_adapter_impl&) = default;
+        resource_adapter_impl(resource_adapter_impl&&) = default;
 
         //! Instantiate specifying an allocator instance
         //!
         //! \param alloc an instance of the Allocator concept.
-        explicit resource_adapter(allocator_type&& alloc);
+        explicit resource_adapter_impl(const allocator_type& alloc);
 
-        resource_adapter& operator=(
-                const resource_adapter&) = default;
+
+        //! Instantiate specifying an allocator instance
+        //!
+        //! \param alloc an instance of the Allocator concept.
+        explicit resource_adapter_impl(allocator_type&& alloc);
+
+        resource_adapter_impl& operator=(
+                const resource_adapter_impl&) = default;
 
         //! Observe the allocator instance wrapped by this adapter
         //!
@@ -70,7 +70,7 @@ namespace pmr
 
         //! Test that this instance is equal to another memory_resource instance
         //!
-        //! returns true iff other can by dynamic_cast to resource_adapter and
+        //! returns true iff other can by dynamic_cast to resource_adapter_impl and
         //!         the allocator wrapped by other is equal to (in the
         //!         operator== sense) the one used by this instance; false
         //!         otherwise
@@ -90,13 +90,13 @@ namespace pmr
 
 
     template <typename Alloc>
-    resource_adapter<Alloc>::resource_adapter()
+    resource_adapter_impl<Alloc>::resource_adapter_impl()
     {
     }
 
 
     template <typename Alloc>
-    resource_adapter<Alloc>::resource_adapter(
+    resource_adapter_impl<Alloc>::resource_adapter_impl(
             const allocator_type& alloc)
         : m_alloc{alloc}
     {
@@ -104,7 +104,7 @@ namespace pmr
 
 
     template <typename Alloc>
-    resource_adapter<Alloc>::resource_adapter(
+    resource_adapter_impl<Alloc>::resource_adapter_impl(
             allocator_type&& alloc)
         : m_alloc{std::move(alloc)}
     {
@@ -112,8 +112,8 @@ namespace pmr
 
 
     template <typename Alloc>
-    typename resource_adapter<Alloc>::allocator_type
-    resource_adapter<Alloc>::get_allocator() const
+    typename resource_adapter_impl<Alloc>::allocator_type
+    resource_adapter_impl<Alloc>::get_allocator() const
     {
         return m_alloc;
     }
@@ -121,7 +121,7 @@ namespace pmr
 
     template <typename Alloc>
     void*
-    resource_adapter<Alloc>::do_allocate(
+    resource_adapter_impl<Alloc>::do_allocate(
             std::size_t bytes, std::size_t align)
     {
         switch(align)
@@ -139,7 +139,7 @@ namespace pmr
 
     template <typename Alloc>
     void
-    resource_adapter<Alloc>::do_deallocate(
+    resource_adapter_impl<Alloc>::do_deallocate(
             void* ptr, std::size_t bytes, std::size_t align)
     {
         switch(align)
@@ -157,11 +157,11 @@ namespace pmr
 
     template <typename Alloc>
     bool
-    resource_adapter<Alloc>::do_is_equal(
+    resource_adapter_impl<Alloc>::do_is_equal(
             const memory_resource& other) const
     {
-        if(const resource_adapter* p =
-                dynamic_cast<const resource_adapter*>(&other))
+        if(const resource_adapter_impl* p =
+                dynamic_cast<const resource_adapter_impl*>(&other))
         {
             return m_alloc == p->m_alloc;
         }
@@ -172,7 +172,7 @@ namespace pmr
     template <typename Alloc>
     template <std::size_t align>
     void*
-    resource_adapter<Alloc>::do_allocate(std::size_t bytes)
+    resource_adapter_impl<Alloc>::do_allocate(std::size_t bytes)
     {
         using aligner = detail::aligned<align>;
         using aligner_traits =
@@ -187,7 +187,7 @@ namespace pmr
     template <typename Alloc>
     template <std::size_t align>
     void
-    resource_adapter<Alloc>::do_deallocate(void* ptr, std::size_t bytes)
+    resource_adapter_impl<Alloc>::do_deallocate(void* ptr, std::size_t bytes)
     {
         using aligner = detail::aligned<align>;
         using aligner_traits =
@@ -198,4 +198,12 @@ namespace pmr
         return aligner_traits::deallocate(alloc,
                 reinterpret_cast<typename aligner_traits::pointer>(ptr), n);
     }
+
+
+    //! This alias template rebinds the Alloc to the char type such that
+    //! specializations of the same allocator type always yield the same type
+    //! (i.e. independent of Alloc::value_type)
+    template <typename Alloc>
+    using resource_adapter = resource_adapter_impl<
+        typename std::allocator_traits<Alloc>::template rebind_alloc<char>>;
 }
