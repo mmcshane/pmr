@@ -13,6 +13,11 @@ namespace pmr
     {
       public:
         using value_type = T;
+
+#       ifndef DOCS
+        // these shouldn't be necessary but the stdlib I'm using to test right
+        // now doesn't use std::allocator_traits in std::list
+
         using pointer = T*;
         using const_pointer = const T*;
         using reference = T&;
@@ -20,6 +25,8 @@ namespace pmr
 
         template<typename U>
         struct rebind { using other = polymorphic_allocator<U>; };
+
+#       endif
 
         //! Instantiate a polymorphic_allocator using pmr::get_default_resource()
         polymorphic_allocator() noexcept;

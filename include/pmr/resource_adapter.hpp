@@ -200,9 +200,12 @@ namespace pmr
     }
 
 
+    //! \class pmr::resource_adapter
     //! This alias template rebinds the Alloc to the char type such that
     //! specializations of the same allocator type always yield the same type
-    //! (i.e. independent of Alloc::value_type)
+    //!
+    //! \tparam Alloc The allocator type to adapt
+    //! \sa pmr::resource_adapter_impl
     template <typename Alloc>
     using resource_adapter = resource_adapter_impl<
         typename std::allocator_traits<Alloc>::template rebind_alloc<char>>;
