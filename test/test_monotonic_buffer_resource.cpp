@@ -48,6 +48,8 @@ TEST_CASE_METHOD(use_tracking_default, "satisfy from provided buffer first", tag
 
     void* ptr2 = mbr.allocate(sizeof(char));
     CHECK(1 == tracked_memory.allocations.size());
+    mbr.release();
+    CHECK(tracked_memory.all_memory_deallocated());
 }
 
 
@@ -64,7 +66,7 @@ TEST_CASE_METHOD(use_tracking_default, "release deallocates upstream", tags)
 }
 
 
-TEST_CASE("equality", tags)
+TEST_CASE("mbr equality", tags)
 {
     pmr::monotonic_buffer_resource mbr1;
     pmr::monotonic_buffer_resource mbr2;
@@ -80,6 +82,8 @@ TEST_CASE_METHOD(use_tracking_default, "override tiny default sizes", tags)
     mbr.allocate(10);
     REQUIRE(1 == tracked_memory.allocations.size());
     CHECK(tracked_memory.allocations[0] > 1);
+    mbr.release();
+    CHECK(tracked_memory.all_memory_deallocated());
 }
 
 
@@ -94,6 +98,9 @@ TEST_CASE_METHOD(use_tracking_default, "geometric growth", tags)
 
     //should be roughly 2x ignoring bytes used for alignment
     CHECK(tracked_memory.allocations[1] > 1.5 * tracked_memory.allocations[0]);
+    mbr.release();
+    INFO(tracked_memory);
+    CHECK(tracked_memory.all_memory_deallocated());
 }
 
 
@@ -103,11 +110,12 @@ TEST_CASE_METHOD(use_tracking_default,
     pmr::monotonic_buffer_resource mbr;
     mbr.allocate(1024 * 1024); // 1MiB is > the default alloc from upstram
     mbr.allocate(1024); // causes 2nd alloc from upstream
-    INFO(tracked_memory.allocations[0]);
     REQUIRE(2 == tracked_memory.allocations.size());
 
     //should be roughly 2x ignoring bytes used for alignment
     CHECK(tracked_memory.allocations[1] > 1.5 * tracked_memory.allocations[0]);
+    mbr.release();
+    CHECK(tracked_memory.all_memory_deallocated());
 }
 
 

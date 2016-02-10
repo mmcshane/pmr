@@ -3,7 +3,7 @@
 #include "pmr/memory_resource.hpp"
 #include <algorithm>
 #include <vector>
-
+#include <ostream>
 
 class tracking_memory_resource : public pmr::memory_resource
 {
@@ -61,4 +61,20 @@ struct use_tracking_default
 
     tracking_memory_resource tracked_memory;
 };
+
+inline std::ostream& operator << (std::ostream& out, const tracking_memory_resource& tmr)
+{
+    out << "Allocations   : [ ";
+    for(auto sz : tmr.allocations)
+    {
+        out << sz << ' ';
+    }
+    out << "]\nDeallocations : [ ";
+    for(auto sz : tmr.deallocations)
+    {
+        out << sz << ' ';
+    }
+    return out << ']' << std::endl;
+
+}
 
