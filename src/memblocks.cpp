@@ -26,13 +26,13 @@ namespace pmr
         void
         memblocks::release(memory_resource& upstream)
         {
-            header* hdr = m_slist.next;
-            while(hdr)
+            header* next = m_slist.next;
+            while(next)
             {
+                header* hdr = next;
+                next = hdr->next;
                 std::size_t bytes = hdr->size;
-                header* ptr = hdr;
-                hdr = hdr->next;
-                upstream.deallocate(ptr, bytes, alignof(std::max_align_t));
+                upstream.deallocate(hdr, bytes, alignof(std::max_align_t));
             }
             m_slist = header{};
         }
