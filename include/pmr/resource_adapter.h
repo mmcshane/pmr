@@ -9,12 +9,14 @@ namespace pmr
     namespace detail
     {
         template <std::size_t align> struct aligned{};
-        template <> struct alignas(2)  aligned<2> { char _[ 2]; };
-        template <> struct alignas(4)  aligned<4> { char _[ 4]; };
-        template <> struct alignas(8)  aligned<8> { char _[ 8]; };
-        template <> struct alignas(16) aligned<16>{ char _[16]; };
-        template <> struct alignas(32) aligned<32>{ char _[32]; };
-        template <> struct alignas(64) aligned<64>{ char _[64]; };
+        template <> struct alignas(  1) aligned<  1> { char _[  1]; };
+        template <> struct alignas(  2) aligned<  2> { char _[  2]; };
+        template <> struct alignas(  4) aligned<  4> { char _[  4]; };
+        template <> struct alignas(  8) aligned<  8> { char _[  8]; };
+        template <> struct alignas( 16) aligned< 16> { char _[ 16]; };
+        template <> struct alignas( 32) aligned< 32> { char _[ 32]; };
+        template <> struct alignas( 64) aligned< 64> { char _[ 64]; };
+        template <> struct alignas(128) aligned<128> { char _[128]; };
     }
 
 
@@ -126,12 +128,14 @@ namespace pmr
     {
         switch(align)
         {
-            case  2: return do_allocate<2>(bytes);
-            case  4: return do_allocate<4>(bytes);
-            case  8: return do_allocate<8>(bytes);
-            case 16: return do_allocate<16>(bytes);
-            case 32: return do_allocate<32>(bytes);
-            case 64: return do_allocate<64>(bytes);
+            case   1: return do_allocate<1>(bytes);
+            case   2: return do_allocate<2>(bytes);
+            case   4: return do_allocate<4>(bytes);
+            case   8: return do_allocate<8>(bytes);
+            case  16: return do_allocate<16>(bytes);
+            case  32: return do_allocate<32>(bytes);
+            case  64: return do_allocate<64>(bytes);
+            case 128: return do_allocate<128>(bytes);
             default: throw std::bad_alloc();
         }
     }
@@ -144,12 +148,14 @@ namespace pmr
     {
         switch(align)
         {
-            case  2: return do_deallocate<2>(ptr, bytes);
-            case  4: return do_deallocate<4>(ptr, bytes);
-            case  8: return do_deallocate<8>(ptr, bytes);
-            case 16: return do_deallocate<16>(ptr, bytes);
-            case 32: return do_deallocate<32>(ptr, bytes);
-            case 64: return do_deallocate<64>(ptr, bytes);
+            case   1: return do_deallocate<1>(ptr, bytes);
+            case   2: return do_deallocate<2>(ptr, bytes);
+            case   4: return do_deallocate<4>(ptr, bytes);
+            case   8: return do_deallocate<8>(ptr, bytes);
+            case  16: return do_deallocate<16>(ptr, bytes);
+            case  32: return do_deallocate<32>(ptr, bytes);
+            case  64: return do_deallocate<64>(ptr, bytes);
+            case 128: return do_deallocate<128>(ptr, bytes);
             default: throw std::bad_alloc();
         }
     }
