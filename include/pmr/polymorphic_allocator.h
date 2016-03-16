@@ -39,7 +39,9 @@ namespace pmr
         polymorphic_allocator(const polymorphic_allocator& other) = default;
 
         //! Instantiate a polymorphic_allocator that will use the supplied
-        //! pmr::memory_resource.
+        //! pmr::memory_resource. This constructor is intentionally _not_
+        //! expicit as it is intended to provide a clean conversion from a
+        //! pmr::memory_resource pointer.
         //!
         //! \param r The wrapped memory_resource
         polymorphic_allocator(memory_resource* r) noexcept;
