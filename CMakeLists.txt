@@ -18,8 +18,14 @@ set_target_properties(pmr PROPERTIES
     CXX_STANDARD 11
     VERSION ${PMR_VERSION}
     SOVERSION ${PMR_VERSION_MAJOR})
-add_compile_options(-Wall -Wpedantic -Wextra -Werror)
-
+target_compile_options(pmr
+    PRIVATE -Wall
+    PRIVATE -Wpedantic
+    PRIVATE -Wextra
+    PRIVATE -Werror
+    #PRIVATE -fsanitize=address
+    PRIVATE -fno-omit-frame-pointer)
+#SET(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address)
 
 include(CTest)
 add_subdirectory(test)
