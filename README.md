@@ -13,6 +13,7 @@ This is a work in progress standalone implementation of [N3916](http://www.open-
 | set_default_resource()                | Complete  |
 | pmr::monotonic_buffer_resource        | Complete  |
 | pmr::polymorphic_allocator            | Complete  |
-| pmr::synchronized_pool_resource       | Absent    |
-| pmr::unsynchronized_pool_resource     | Absent    |
+| pmr::synchronized_pool_resource       | Partial   |
+| pmr::unsynchronized_pool_resource     | Partial   |
 | pmr::resource_adapter                 | Complete  |
+| STL container typedefs                | Complete  |
