@@ -1,6 +1,6 @@
 #pragma once
 
-#include "memory_resource.hpp"
+#include "memory_resource.h"
 #include <cassert>
 #include <type_traits>
 #include <tuple>

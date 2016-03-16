@@ -1,5 +1,5 @@
-#include "pmr/memory_resource.hpp"
-#include "pmr/resource_adapter.hpp"
+#include "pmr/memory_resource.h"
+#include "pmr/resource_adapter.h"
 #include <atomic>
 #include <cassert>
 #include <new>
@@ -15,12 +15,11 @@ namespace pmr
     void*
     memory_resource::allocate(std::size_t bytes, std::size_t align)
     {
-        if(0 == bytes)
-        {
-            return nullptr;
-        }
-        assert(align <= sizeof(std::max_align_t));
-        return do_allocate(bytes, align);
+        assert(align > 0);
+        assert(!(align & (align - 1)));
+        assert(align <= alignof(std::max_align_t));
+
+        return 0 == bytes ? nullptr : do_allocate(bytes, align);
     }
 
 

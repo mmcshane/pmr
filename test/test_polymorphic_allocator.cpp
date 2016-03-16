@@ -1,7 +1,7 @@
-#include "pmr/polymorphic_allocator.hpp"
-#include "pmr/memory_resource.hpp"
-#include "pmr/monotonic_buffer_resource.hpp"
-#include "tracking_memory_resource.hpp"
+#include "pmr/polymorphic_allocator.h"
+#include "pmr/memory_resource.h"
+#include "pmr/monotonic_buffer_resource.h"
+#include "tracking_memory_resource.h"
 #include <catch.hpp>
 #include <memory>
 #include <string>

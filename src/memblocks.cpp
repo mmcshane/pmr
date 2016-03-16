@@ -1,5 +1,5 @@
-#include "pmr/detail/memblocks.hpp"
-#include "pmr/memory_resource.hpp"
+#include "pmr/detail/memblocks.h"
+#include "pmr/memory_resource.h"
 #include <limits>
 #include <new>
 

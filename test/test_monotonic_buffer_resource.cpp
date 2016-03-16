@@ -1,6 +1,6 @@
-#include "pmr/monotonic_buffer_resource.hpp"
-#include "pmr/memory_resource.hpp"
-#include "tracking_memory_resource.hpp"
+#include "pmr/monotonic_buffer_resource.h"
+#include "pmr/memory_resource.h"
+#include "tracking_memory_resource.h"
 #include <catch.hpp>
 #include <limits>
 #include <new>

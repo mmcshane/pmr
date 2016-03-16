@@ -1,5 +1,5 @@
-#include "pmr/memory_resource.hpp"
-#include "tracking_memory_resource.hpp"
+#include "pmr/memory_resource.h"
+#include "tracking_memory_resource.h"
 #include <catch.hpp>
 #include <new>
 
