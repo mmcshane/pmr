@@ -141,9 +141,7 @@ namespace pmr
         struct aware_trailing{}; // last arg of ctor is convertible from alloc
 
         template <typename U, typename A, typename... Args>
-        struct construct_style
-        {
-            using type = typename std::conditional<
+        using construct_style = typename std::conditional<
                 std::uses_allocator<U, A>::value &&
                 std::is_constructible<U, std::allocator_arg_t, A, Args...>::value,
                     aware_tagged,
@@ -154,11 +152,6 @@ namespace pmr
                             unaware
                     >::type
                 >::type;
-        };
-
-
-        template <typename U, typename A, typename... Args>
-        using construct_style_t = typename construct_style<U, A, Args...>::type;
 
         memory_resource* m_memory;
 
@@ -245,7 +238,7 @@ namespace pmr
     void
     polymorphic_allocator<T>::construct(U* ptr, Args&&... args)
     {
-        auto style = construct_style_t<U, memory_resource*, Args...>{};
+        auto style = construct_style<U, memory_resource*, Args...>{};
         construct(style, ptr, std::forward<Args>(args)...);
     }
 
@@ -257,8 +250,8 @@ namespace pmr
             std::piecewise_construct_t, std::tuple<Args1...> x,
             std::tuple<Args2...> y)
     {
-        auto x_style = construct_style_t<T1, memory_resource*, Args1...>{};
-        auto y_style = construct_style_t<T2, memory_resource*, Args2...>{};
+        auto x_style = construct_style<T1, memory_resource*, Args1...>{};
+        auto y_style = construct_style<T2, memory_resource*, Args2...>{};
 
         ::new (ptr) std::pair<T1, T2>(std::piecewise_construct,
                 construct_tuple(x_style, x), construct_tuple(y_style, y));
