@@ -22,6 +22,10 @@ namespace pmr
 
     //! Adapts any allocator type to the memory_resource interface
     //!
+    //! You almost certainly want to use this via the pmr::resource_adapter
+    //! type alias.
+    //!
+    //! \sa pmr::resource_adapter
     //! \tparam Alloc The type of allocator to adapt
     template <typename Alloc>
     class resource_adapter_impl : public memory_resource
