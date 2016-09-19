@@ -2,7 +2,9 @@
 
 #include "pmr/memory_resource.h"
 #include "pmr/pool_options.h"
+#include "pmr/unsynchronized_pool_resource.h"
 #include <cstdint>
+#include <mutex>
 
 namespace pmr
 {
@@ -71,8 +73,7 @@ namespace pmr
       private:
         void adjust_pool_options();
 
-        pool_options m_opts;
-        memory_resource* m_upstream;
-        //std::vector<pool> m_pools;
+        mutable std::mutex m_mutex;
+        unsynchronized_pool_resource m_delegate;
     };
 }
